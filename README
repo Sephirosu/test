@@ -1,0 +1,22 @@
+# 📧 Email Sender App
+
+Full-stack Next.js aplikacija za slanje i praćenje emailova. Korisnik može unositi email adrese, birati više njih pomoću dropdowna, i slati ih – aplikacija čuva i prikazuje najčešće korišćene adrese.
+
+## 🔧 Tehnologije
+
+- Next.js 14/15 App Router
+- TypeScript & Tailwind CSS
+- SQLite (preko Prisma ORM)
+- Zod validacija
+- Custom hookovi: `useDebounce`, `useClickOutside`
+
+## 🚀 Pokretanje lokalno
+
+```bash
+git clone https://github.com/Sephirosu/test.git
+cd test
+npm install
+npx prisma generate
+npx prisma db push
+npm run dev
+```
