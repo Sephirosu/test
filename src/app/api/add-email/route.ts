@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
 import { z } from "zod";
-import { isBlacklisted } from "../../../../lib/blacklist";
+import { isBlacklisted } from "@/lib/blacklist";
 
 const prisma = new PrismaClient();
 

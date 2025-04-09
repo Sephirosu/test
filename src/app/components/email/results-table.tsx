@@ -2,12 +2,7 @@
 
 import type React from "react";
 
-import type { EmailStat } from "@/types/email";
-
-interface ResultsTableProps {
-  results: EmailStat[];
-}
-
+import type { ResultsTableProps } from "@/types/email";
 export default function ResultsTable({
   results,
 }: ResultsTableProps): React.ReactElement {

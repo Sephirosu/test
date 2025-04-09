@@ -3,7 +3,11 @@
 import type React from "react";
 
 import { useState, useEffect } from "react";
-import { EmailInput, EmailSelector, ResultsTable } from "@/src/app/components";
+import {
+  EmailInput,
+  EmailSelector,
+  ResultsTable,
+} from "@/src/app/components/email";
 import type { EmailStat } from "@/types/email";
 
 export default function Home(): React.ReactElement {

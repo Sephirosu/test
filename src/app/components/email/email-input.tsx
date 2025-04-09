@@ -1,12 +1,9 @@
 "use client";
 
-import type React from "react";
-
-import { useState, useEffect, type ChangeEvent } from "react";
-
-interface EmailInputProps {
-  onAddEmail: (email: string) => Promise<boolean>;
-}
+import React, { useState, type ChangeEvent, type KeyboardEvent } from "react";
+import { Button } from "../ui";
+import { useDebounce } from "@/src/app/hooks";
+import type { EmailInputProps } from "@/types/email";
 
 export default function EmailInput({
   onAddEmail,
@@ -14,19 +11,17 @@ export default function EmailInput({
   const [input, setInput] = useState<string>("");
   const [error, setError] = useState<string>("");
 
-  useEffect(() => {
-    if (input) {
-      const validate = (value: string): void => {
-        const isValid = /^[\w-.]+@[\w-]+\.[a-z]{2,}$/i.test(value);
-        setError(isValid ? "" : "Invalid email");
-      };
+  const debouncedInput = useDebounce(input, 300);
 
-      const debounced = setTimeout(() => validate(input), 300);
-      return () => clearTimeout(debounced);
-    } else {
+  React.useEffect(() => {
+    if (!debouncedInput) {
       setError("");
+      return;
     }
-  }, [input]);
+
+    const isValid = /^[\w-.]+@[\w-]+\.[a-z]{2,}$/i.test(debouncedInput);
+    setError(isValid ? "" : "Invalid email");
+  }, [debouncedInput]);
 
   const handleAdd = async (): Promise<void> => {
     const success = await onAddEmail(input);
@@ -34,6 +29,12 @@ export default function EmailInput({
       setInput("");
     } else {
       setError("Failed to add email");
+    }
+  };
+
+  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>): void => {
+    if (e.key === "Enter" && input && error === "") {
+      void handleAdd();
     }
   };
 
@@ -45,17 +46,19 @@ export default function EmailInput({
         onChange={(e: ChangeEvent<HTMLInputElement>) =>
           setInput(e.target.value)
         }
+        onKeyDown={handleKeyDown}
         placeholder="Enter email"
         className="border border-pink-400 px-3 py-2 rounded w-full"
       />
       {error && <p className="text-red-500 text-xs mt-1">{error}</p>}
-      <button
+      <Button
         onClick={handleAdd}
         disabled={!input || error !== ""}
-        className="mt-2 bg-pink-500 text-white px-4 py-2 rounded disabled:opacity-50"
+        className="mt-2 text-white px-4 py-2 rounded disabled:opacity-50"
+        variant="pink"
       >
         Add Email →
-      </button>
+      </Button>
     </section>
   );
 }
